@@ -1,0 +1,26 @@
+{
+    "name": "getsocialapi/instagram-scraper-api",
+    "description": "GetSocialAPI - PHP client for the Instagram Scraper API (no cookies, no accounts required)",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["instagram", "api", "scraping", "sdk", "getsocialapi"],
+    "homepage": "https://getsocialapi.com",
+    "authors": [
+        { "name": "GetSocialAPI" }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "GetSocialAPI\\Instagram\\": "src/"
+        }
+    },
+    "support": {
+        "email": "hello@getsocialapi.com",
+        "issues": "https://github.com/GetSocialAPI/Instagram-Scraper-API-PHP/issues",
+        "source": "https://github.com/GetSocialAPI/Instagram-Scraper-API-PHP"
+    }
+}
