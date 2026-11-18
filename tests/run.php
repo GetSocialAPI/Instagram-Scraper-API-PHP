@@ -80,6 +80,7 @@ $ig->userMedias(25025320, 5, 'CURSOR');
 $ig->userTags(25025320);
 $ig->userStories(25025320);
 $ig->userHighlights(25025320);
+$ig->highlightStories('highlight:18142207969557132');
 $ig->followers(43586162288, 25);
 $ig->following(25025320);
 $ig->following(25025320, 30, 'CUR', 'durov');
@@ -101,6 +102,7 @@ $expected = [
     ['GET', '/ig/user/tags/25025320', ['count' => 12], true],
     ['GET', '/ig/user/stories/25025320', [], true],
     ['GET', '/ig/user/highlights/25025320', [], true],
+    ['GET', '/ig/highlight/stories/18142207969557132', [], true],
     ['GET', '/followers/43586162288', ['count' => 25], true],
     ['GET', '/following/25025320', ['count' => 25], true],
     ['GET', '/following/25025320', ['count' => 30, 'max_id' => 'CUR', 'query' => 'durov'], true],

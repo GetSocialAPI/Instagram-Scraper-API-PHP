@@ -93,6 +93,21 @@ final class InstagramAPI
         return $this->transport->request('GET', '/ig/user/highlights/' . self::digits($userId, 'user_id'));
     }
 
+    /**
+     * GET /ig/highlight/stories/{highlight_id} - media of a highlight.
+     *
+     * Accepts the tray id as is - the leading `highlight:` prefix
+     * (as returned by `userHighlights()`) is trimmed automatically.
+     */
+    public function highlightStories(int|string $highlightId): array
+    {
+        $hid = \preg_replace('/^highlight:/', '', (string) $highlightId) ?? '';
+        return $this->transport->request(
+            'GET',
+            '/ig/highlight/stories/' . self::quote(self::length($hid, 'highlight_id', 1, 64))
+        );
+    }
+
     // ---------- Followers / following ----------
 
     /**
