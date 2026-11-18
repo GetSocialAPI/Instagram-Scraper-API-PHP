@@ -73,7 +73,6 @@ $ig = new InstagramAPI($t);
 $ig->userInfo(25025320);
 $ig->userByUsername('durov');
 $ig->profile(25025320);
-$ig->userAbout(25025320);
 $ig->searchUsername('durov');
 $ig->similarUsers(25025320);
 $ig->userMedias(25025320);
@@ -81,25 +80,20 @@ $ig->userMedias(25025320, 5, 'CURSOR');
 $ig->userTags(25025320);
 $ig->userStories(25025320);
 $ig->userHighlights(25025320);
-$ig->highlightStories('highlight:17895462');
 $ig->followers(43586162288, 25);
 $ig->following(25025320);
 $ig->following(25025320, 30, 'CUR', 'durov');
 $ig->mediaInfo('Deu3BoCBbDP');
 $ig->mediaLikers(4012386322294878415);
 $ig->mediaComments(4012386322294878415, 50, 'recent');
-$ig->searchClips('cats');
 $ig->hashtagInfo('#photography');
 $ig->hashtagSearch('photo');
-$ig->hashtagPosts('photography');
 $ig->locationInfo(213385402);
-$ig->locationMedia(213385402);
 
 $expected = [
     ['GET', '/ig/user/info/25025320', [], true],
     ['GET', '/ig/user/username_info/durov', [], true],
     ['GET', '/profile/25025320', [], true],
-    ['GET', '/user/about/25025320', [], true],
     ['GET', '/search/username/durov', ['count' => 10], true],
     ['GET', '/ig/user/similar/25025320', [], true],
     ['GET', '/ig/user/media/25025320', ['count' => 12], true],
@@ -107,19 +101,15 @@ $expected = [
     ['GET', '/ig/user/tags/25025320', ['count' => 12], true],
     ['GET', '/ig/user/stories/25025320', [], true],
     ['GET', '/ig/user/highlights/25025320', [], true],
-    ['GET', '/ig/highlight/stories/17895462', [], true],
     ['GET', '/followers/43586162288', ['count' => 25], true],
     ['GET', '/following/25025320', ['count' => 25], true],
     ['GET', '/following/25025320', ['count' => 30, 'max_id' => 'CUR', 'query' => 'durov'], true],
     ['GET', '/ig/media/info/Deu3BoCBbDP', [], true],
     ['GET', '/ig/media/likers/4012386322294878415', [], true],
     ['GET', '/ig/media/comments/4012386322294878415', ['count' => 50, 'sort_order' => 'recent'], true],
-    ['GET', '/ig/media/search_clips/cats', [], true],
     ['GET', '/ig/hashtag/info/photography', [], true],
     ['GET', '/ig/hashtag/search/photo', [], true],
-    ['GET', '/v2/hashtag/posts/photography', [], true],
     ['GET', '/ig/location/info/213385402', [], true],
-    ['GET', '/ig/location/media/213385402', [], true],
 ];
 
 ok(\count($t->calls) === \count($expected), 'route count');
@@ -146,7 +136,6 @@ throws(fn () => $ig->mediaInfo('!!'), InvalidArgumentException::class, 'bad medi
 throws(fn () => $ig->mediaComments('Deu3BoCBbDP', null, 'hot'), InvalidArgumentException::class, 'bad sort_order');
 throws(fn () => $ig->userMedias(25025320, 0), InvalidArgumentException::class, 'count too low');
 throws(fn () => $ig->following(25025320, 51), InvalidArgumentException::class, 'following count too high');
-throws(fn () => $ig->searchClips(''), InvalidArgumentException::class, 'empty keyword');
 
 // ---------- client ----------
 

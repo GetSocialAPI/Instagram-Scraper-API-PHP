@@ -74,39 +74,31 @@ new Client(?string $apiKey = null, ?string $baseUrl = null, int $timeout = 30, i
 | `profile($userId)` | `/profile/<id>` | profile by numeric id |
 | `userInfo($userId)` | `/ig/user/info/<id>` | profile by numeric id |
 | `userByUsername($username)` | `/ig/user/username_info/<username>` | profile by username |
-| `userAbout($userId)` | `/user/about/<id>` | About this account: country, joined, former usernames, shared-followers count, verified |
 | `searchUsername($query, $count = 10)` | `/search/username/<q>` | search users, resolve username → pk |
 | `similarUsers($userId)` | `/ig/user/similar/<id>` | suggested accounts |
 | `userMedias($userId, $count = 12, $maxId = null)` | `/ig/user/media/<id>` | profile grid posts |
 | `userTags($userId, $count = 12, $maxId = null)` | `/ig/user/tags/<id>` | posts with the user tagged |
 | `userStories($userId)` | `/ig/user/stories/<id>` | active stories |
 | `userHighlights($userId)` | `/ig/user/highlights/<id>` | highlights tray |
-| `highlightStories($highlightId)` | `/ig/highlight/stories/<id>` | media of a highlight |
 | `followers($userId, $count = 50, $maxId = null, $query = null)` | `/followers/<id>` | followers list |
 | `following($userId, $count = 25, $maxId = null, $query = null)` | `/following/<id>` | following list |
 | `mediaInfo($media)` | `/ig/media/info/<pk\|shortcode>` | full media card; accepts numeric pk or shortcode |
 | `mediaLikers($media)` | `/ig/media/likers/<pk\|shortcode>` | users who liked (up to ~100, no pagination) |
 | `mediaComments($media, $count = null, $sortOrder = "recent", $minId = null)` | `/ig/media/comments/<pk\|shortcode>` | media comments; cursor pagination `next_min_id` → `$minId` |
-| `searchClips($keyword)` | `/ig/media/search_clips/<kw>` | search reels by keyword |
 | `hashtagInfo($tag)` | `/ig/hashtag/info/<tag>` | hashtag card |
 | `hashtagSearch($query)` | `/ig/hashtag/search/<q>` | search hashtags |
-| `hashtagPosts($tag, $maxId = null)` | `/v2/hashtag/posts/<tag>` | posts by hashtag |
 | `locationInfo($pk)` | `/ig/location/info/<pk>` | location card |
-| `locationMedia($pk, $maxId = null)` | `/ig/location/media/<pk>` | media by location |
 
 Every method returns the raw JSON of the API route as an associative array —
 nothing is unwrapped, filtered or renamed. Where the API supports pagination
-(`followers`*, `following`, `userMedias`, `userTags`, `hashtagPosts`,
-`locationMedia`), pass the cursor from the previous response (`next_max_id`)
-as `$maxId`. `mediaComments` paginates with a different cursor: always request
+(`followers`*, `following`, `userMedias`, `userTags`), pass the cursor from the
+previous response (`next_max_id`) as `$maxId`. `mediaComments` paginates with a different cursor: always request
 with `sortOrder` `"recent"` (the default) and pass `next_min_id` back as
 `$minId` until it comes back null — pages are chronological and disjoint.
 Instagram never returns `next_max_id` for comments, so `max_id` must not be
 used there. *`followers` works on unverified accounts (nearly the full list,
 plus the `$query` filter); verified accounts (blue checkmark) expose no more
-than ~50 followers — one page, no cursor, `$query` ignored. For lists without
-cursors (`searchClips`, `hashtagSearch`) each call simply returns the service
-page.
+than ~50 followers — one page, no cursor, `$query` ignored. `hashtagSearch` returns one page without a cursor.
 
 Full request/response reference with live examples:
 [docs.getsocialapi → API Reference](https://getsocialapi.com/docs/api/instagram/user/get_info_by_id/)

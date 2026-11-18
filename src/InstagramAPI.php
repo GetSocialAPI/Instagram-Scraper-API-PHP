@@ -39,19 +39,6 @@ final class InstagramAPI
     }
 
     /**
-     * GET /user/about/{user_id} - About this account.
-     *
-     * The "About this account" screen: country, registration month,
-     * former usernames count, accounts-with-shared-followers count,
-     * verification. Sparse accounts return null fields - check
-     * `has_about_data` / `unavailable` before using them.
-     */
-    public function userAbout(int|string $userId): array
-    {
-        return $this->transport->request('GET', '/user/about/' . self::digits($userId, 'user_id'));
-    }
-
-    /**
      * GET /search/username/{query} - search users.
      *
      * `$count` is forwarded to the service, but the response may include
@@ -104,21 +91,6 @@ final class InstagramAPI
     public function userHighlights(int|string $userId): array
     {
         return $this->transport->request('GET', '/ig/user/highlights/' . self::digits($userId, 'user_id'));
-    }
-
-    /**
-     * GET /ig/highlight/stories/{highlight_id} - media of a highlight.
-     *
-     * Accepts the tray id as is - the leading `highlight:` prefix
-     * (as returned by `userHighlights()`) is trimmed automatically.
-     */
-    public function highlightStories(int|string $highlightId): array
-    {
-        $hid = \preg_replace('/^highlight:/', '', (string) $highlightId) ?? '';
-        return $this->transport->request(
-            'GET',
-            '/ig/highlight/stories/' . self::quote(self::length($hid, 'highlight_id', 1, 64))
-        );
     }
 
     // ---------- Followers / following ----------
@@ -230,20 +202,6 @@ final class InstagramAPI
         return $this->transport->request('GET', '/ig/media/comments/' . self::mediaArg($media), $params);
     }
 
-    /**
-     * GET /ig/media/search_clips/{keyword} - search reels by keyword.
-     *
-     * The service returns its native page (~12 clips); a page-size
-     * parameter is not supported by the API for this route.
-     */
-    public function searchClips(int|string $keyword): array
-    {
-        return $this->transport->request(
-            'GET',
-            '/ig/media/search_clips/' . self::quote(self::length($keyword, 'keyword', 1, 100))
-        );
-    }
-
     // ---------- Hashtags ----------
 
     /** GET /ig/hashtag/info/{tag} - hashtag card. A leading # is trimmed. */
@@ -263,45 +221,12 @@ final class InstagramAPI
         return $this->transport->request('GET', '/ig/hashtag/search/' . self::quote($query));
     }
 
-    /**
-     * GET /v2/hashtag/posts/{tag} - posts by hashtag. A leading # is trimmed.
-     *
-     * The service returns its native page (~15-18 posts) plus `next_max_id`
-     * for pagination via `$maxId`; a page-size parameter is not supported.
-     */
-    public function hashtagPosts(int|string $tag, ?string $maxId = null): array
-    {
-        $params = [];
-        if ($maxId !== null) {
-            $params['max_id'] = $maxId;
-        }
-
-        return $this->transport->request('GET', '/v2/hashtag/posts/' . self::tag($tag), $params);
-    }
-
     // ---------- Locations ----------
 
     /** GET /ig/location/info/{pk} - location card. */
     public function locationInfo(int|string $pk): array
     {
         return $this->transport->request('GET', '/ig/location/info/' . self::digits($pk, 'pk'));
-    }
-
-    /**
-     * GET /ig/location/media/{pk} - media by location.
-     *
-     * The service returns its native page; pass `next_max_id` from a
-     * previous response as `$maxId` to request the next page. The
-     * response also carries `next_page` - a page counter, not a cursor.
-     */
-    public function locationMedia(int|string $pk, ?string $maxId = null): array
-    {
-        $params = [];
-        if ($maxId !== null) {
-            $params['max_id'] = $maxId;
-        }
-
-        return $this->transport->request('GET', '/ig/location/media/' . self::digits($pk, 'pk'), $params);
     }
 
     // ---------- Validators ----------
