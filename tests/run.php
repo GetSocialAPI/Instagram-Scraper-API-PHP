@@ -76,7 +76,7 @@ $ig->profile(25025320);
 $ig->searchUsername('durov');
 $ig->similarUsers(25025320);
 $ig->userMedias(25025320);
-$ig->userMedias(25025320, 5, 'CURSOR');
+$ig->userMedias(25025320, 'CURSOR');
 $ig->userTags(25025320);
 $ig->userStories(25025320);
 $ig->userHighlights(25025320);
@@ -97,8 +97,8 @@ $expected = [
     ['GET', '/profile/25025320', [], true],
     ['GET', '/search/username/durov', ['count' => 10], true],
     ['GET', '/ig/user/similar/25025320', [], true],
-    ['GET', '/ig/user/media/25025320', ['count' => 12], true],
-    ['GET', '/ig/user/media/25025320', ['count' => 5, 'max_id' => 'CURSOR'], true],
+    ['GET', '/ig/user/media/25025320', [], true],
+    ['GET', '/ig/user/media/25025320', ['max_id' => 'CURSOR'], true],
     ['GET', '/ig/user/tags/25025320', ['count' => 12], true],
     ['GET', '/ig/user/stories/25025320', [], true],
     ['GET', '/ig/user/highlights/25025320', [], true],
@@ -136,7 +136,7 @@ throws(fn () => $ig->userInfo('123456789012345678901'), InvalidArgumentException
 throws(fn () => $ig->userByUsername(''), InvalidArgumentException::class, 'empty username');
 throws(fn () => $ig->mediaInfo('!!'), InvalidArgumentException::class, 'bad media arg');
 throws(fn () => $ig->mediaComments('Deu3BoCBbDP', null, 'hot'), InvalidArgumentException::class, 'bad sort_order');
-throws(fn () => $ig->userMedias(25025320, 0), InvalidArgumentException::class, 'count too low');
+throws(fn () => $ig->userTags(25025320, 0), InvalidArgumentException::class, 'tagged-post count too low');
 throws(fn () => $ig->following(25025320, 51), InvalidArgumentException::class, 'following count too high');
 
 // ---------- client ----------

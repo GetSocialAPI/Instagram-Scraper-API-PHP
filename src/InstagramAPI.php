@@ -61,13 +61,13 @@ final class InstagramAPI
 
     // ---------- User content ----------
 
-    /** GET /ig/user/media/{user_id} - profile grid posts. */
-    public function userMedias(int|string $userId, ?int $count = 12, ?string $maxId = null): array
+    /** GET /ig/user/media/{user_id} - up to 12 profile posts per page. */
+    public function userMedias(int|string $userId, ?string $maxId = null): array
     {
         return $this->transport->request(
             'GET',
             '/ig/user/media/' . self::digits($userId, 'user_id'),
-            self::page($count, $maxId, 12)
+            $maxId === null ? [] : ['max_id' => $maxId]
         );
     }
 
