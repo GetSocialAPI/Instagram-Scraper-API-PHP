@@ -71,6 +71,7 @@ $t = new FakeTransport();
 $ig = new InstagramAPI($t);
 
 $ig->userInfo(25025320);
+$ig->userAbout(25025320);
 $ig->userByUsername('durov');
 $ig->profile(25025320);
 $ig->searchUsername('durov');
@@ -93,6 +94,7 @@ $ig->locationInfo(213385402);
 
 $expected = [
     ['GET', '/ig/user/info/25025320', [], true],
+    ['GET', '/user/about/25025320', [], true],
     ['GET', '/ig/user/username_info/durov', [], true],
     ['GET', '/profile/25025320', [], true],
     ['GET', '/search/username/durov', ['count' => 10], true],

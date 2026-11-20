@@ -39,6 +39,19 @@ final class InstagramAPI
     }
 
     /**
+     * GET /user/about/{user_id} - About this account.
+     *
+     * The "About this account" screen: country, registration month,
+     * former usernames count, accounts-with-shared-followers count,
+     * verification. Sparse accounts return null fields - check
+     * `has_about_data` / `unavailable` before using them.
+     */
+    public function userAbout(int|string $userId): array
+    {
+        return $this->transport->request('GET', '/user/about/' . self::digits($userId, 'user_id'));
+    }
+
+    /**
      * GET /search/username/{query} - search users.
      *
      * `$count` is forwarded to the service, but the response may include

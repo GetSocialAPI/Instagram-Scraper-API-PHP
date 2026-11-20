@@ -74,6 +74,7 @@ new Client(?string $apiKey = null, ?string $baseUrl = null, int $timeout = 30, i
 | `profile($userId)` | `/profile/<id>` | profile by numeric id |
 | `userInfo($userId)` | `/ig/user/info/<id>` | profile by numeric id |
 | `userByUsername($username)` | `/ig/user/username_info/<username>` | profile by username |
+| `userAbout($userId)` | `/user/about/<id>` | About this account |
 | `searchUsername($query, $count = 10)` | `/search/username/<q>` | search users, resolve username → pk |
 | `similarUsers($userId)` | `/ig/user/similar/<id>` | suggested accounts |
 | `userMedias($userId, $maxId = null)` | `/ig/user/media/<id>` | up to 12 profile posts per page |
